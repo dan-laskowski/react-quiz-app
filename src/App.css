@@ -1,38 +1,56 @@
-.App {
+body {
+  min-height: 100vh;
+  background-color: #F7F8FD;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.quiz {
+  padding: 15px 15px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px;
+  background-color: #FBFBFB;
+  color:#081c82;
+  border-radius: 1rem;
+  width: 280px;
+  box-shadow:
+    0 2.8px 2.3px -10px rgba(0, 0, 0, 0.022),
+    0 6.7px 5.5px -10px rgba(0, 0, 0, 0.032),
+    0 12.5px 10.4px -10px rgba(0, 0, 0, 0.04),
+    0 22.3px 18.5px -10px rgba(0, 0, 0, 0.048),
+    0 41.8px 34.7px -10px rgba(0, 0, 0, 0.058),
+    0 100px 83px -10px rgba(0, 0, 0, 0.08)
+}
+
+.quiz__title {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  color:#081c82;
+  font-size: 2rem;
+  padding: 10px 15px;
+  margin-top: 40px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.progress-bar {
+  position: relative;
+  height: 20px;
+  width: 180px;
+  border-radius: 50px;
+  border: 1px solid #333;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.filler {
+  background: #081c82;
+  height: 100%;
+  border-radius: inherit;
+  transition: width .2s ease-in;
 }
