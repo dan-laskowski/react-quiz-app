@@ -15,6 +15,7 @@ function App() {
   const [userAnswers, setUserAnswers] = useState([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   const startTrivia = async () => {
     setLoading(true);
@@ -25,12 +26,14 @@ function App() {
     setUserAnswers([]);
     setNumber(0);
     setLoading(false);
+    setProgress(0);
   };
 
   const checkAnswer = (e) => {
     if (!gameOver) {
       const answer = e.currentTarget.value;
       const correct = questions[number].correct_answer === answer;
+
 
       if (correct) setScore(prevScore => prevScore + 1)
 
@@ -41,6 +44,7 @@ function App() {
         correctAnswer: questions[number].correct_answer,
       }
       setUserAnswers(prev => [...prev, answerObject]);
+      setProgress(prevProgress => prevProgress + 10);
     }
   }
 
@@ -48,20 +52,26 @@ function App() {
     const nextQuestion = number + 1;
 
     nextQuestion === TOTAL_QUESTIONS ? setGameOver(true) : setNumber(nextQuestion)
-
   }
 
   return (
     <div className="app">
       <h1 className="quiz__title">Quiz App</h1>
-      <ProgressBar percentage={number < 9 ? number * 10 : 100} />
+
       <div className="quiz">
         {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
           <button
             className="quiz__button quiz__button--start"
             onClick={startTrivia}>New Game</button>
         ) : null}
-        {!gameOver ? <p className="quiz__score">Score: {score}</p> : null}
+        {!gameOver ?
+          (<>
+            <p className="quiz__score">Score: {score}</p>
+            {/* <ProgressBar percentage={number < 9 ? number * 10 : 100} /> */}
+            <ProgressBar percentage={progress} />
+          </>
+          ) :
+          null}
         {loading && <p className="quiz__loading">Loading Questions...</p>}
         {!loading && !gameOver &&
           <QuestionCard
