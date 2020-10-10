@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import useCountDown from 'react-countdown-hook'
 import './reset.css'
 import './App.css';
 import { fetchTrivia } from './api/fetchTrivia'
@@ -6,16 +7,17 @@ import QuestionCard from './components/QuestionCard'
 import { ProgressBar } from './components/ProgressBar'
 
 const TOTAL_QUESTIONS = 10;
-
+const INITIAL_TIME = 30 * 1000;
+const INTERVAL = 1000;
 
 function App() {
   const [loading, setLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [number, setNumber] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(null);
   const [gameOver, setGameOver] = useState(true);
-  const [progress, setProgress] = useState(0);
+  const [timeLeft, { start, pause }] = useCountDown(INITIAL_TIME, INTERVAL);
 
   const startTrivia = async () => {
     setLoading(true);
@@ -26,16 +28,33 @@ function App() {
     setUserAnswers([]);
     setNumber(0);
     setLoading(false);
-    setProgress(0);
+    start();
   };
+
+  const restartTimer = useCallback(() => {
+    start(INITIAL_TIME);
+  }, [])
+
+  const stopTimer = useCallback(() => {
+    pause();
+  }, [])
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      checkAnswer();
+    }
+
+  }, [timeLeft])
 
   const checkAnswer = (e) => {
     if (!gameOver) {
-      const answer = e.currentTarget.value;
+      let answer = '';
       const correct = questions[number].correct_answer === answer;
-
-
-      if (correct) setScore(prevScore => prevScore + 1)
+      if (typeof (e) !== 'undefined') {
+        stopTimer();
+        answer = e.currentTarget.value;
+        if (correct) setScore(prevScore => prevScore + 1)
+      }
 
       const answerObject = {
         question: questions[number].question,
@@ -44,14 +63,14 @@ function App() {
         correctAnswer: questions[number].correct_answer,
       }
       setUserAnswers(prev => [...prev, answerObject]);
-      setProgress(prevProgress => prevProgress + 10);
+      console.log(timeLeft)
     }
   }
 
   const nextQuestion = () => {
     const nextQuestion = number + 1;
-
     nextQuestion === TOTAL_QUESTIONS ? setGameOver(true) : setNumber(nextQuestion)
+    restartTimer();
   }
 
   return (
@@ -64,29 +83,25 @@ function App() {
             className="quiz__button quiz__button--start"
             onClick={startTrivia}>New Game</button>
         ) : null}
-        {!gameOver ?
-          (<>
-            <p className="quiz__score">Score: {score}</p>
-            {/* <ProgressBar percentage={number < 9 ? number * 10 : 100} /> */}
-            <ProgressBar percentage={progress} />
-          </>
-          ) :
-          null}
         {loading && <p className="quiz__loading">Loading Questions...</p>}
         {!loading && !gameOver &&
-          <QuestionCard
-            questionNr={number + 1}
-            totalQuestions={TOTAL_QUESTIONS}
-            question={questions[number].question}
-            answers={questions[number].answers}
-            userAnswer={userAnswers ? userAnswers[number] : undefined}
-            callback={checkAnswer}
-          />}
+          <>
+            <ProgressBar timeLeft={timeLeft} />
+            <QuestionCard
+              questionNr={number + 1}
+              totalQuestions={TOTAL_QUESTIONS}
+              question={questions[number].question}
+              answers={questions[number].answers}
+              userAnswer={userAnswers ? userAnswers[number] : undefined}
+              callback={checkAnswer}
+            />
+          </>}
         {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTIONS - 1 &&
           <button
             className="quiz__button quiz__button--next"
             onClick={nextQuestion}
           >Next Question</button>}
+        {userAnswers.length === TOTAL_QUESTIONS ? <p className="quiz__score">Score: {score}</p> : null}
       </div>
     </div>
   );

@@ -17,10 +17,10 @@ export default function QuestionCard({
         className="question-card__question"
         dangerouslySetInnerHTML={{ __html: question }}
       />
-      <div className="card__answers">
+      <div className="question-card__answers">
         {answers.map(answer => (
-          <div key={answer}>
-            <button disabled={!!userAnswer} value={answer} onClick={callback}>
+          <div className="question-card__button-container" key={answer}>
+            <button className="question-card__button" disabled={!!userAnswer} value={answer} onClick={callback}>
               <span dangerouslySetInnerHTML={{ __html: answer }}></span>
             </button>
           </div>
