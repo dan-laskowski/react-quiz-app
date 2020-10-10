@@ -33,28 +33,29 @@ function App() {
 
   const restartTimer = useCallback(() => {
     start(INITIAL_TIME);
-  }, [])
+  }, [start])
 
   const stopTimer = useCallback(() => {
     pause();
-  }, [])
+  }, [pause])
 
   useEffect(() => {
     if (timeLeft === 0) {
       checkAnswer();
     }
-
   }, [timeLeft])
 
   const checkAnswer = (e) => {
     if (!gameOver) {
       let answer = '';
-      const correct = questions[number].correct_answer === answer;
+      let correct = ''
       if (typeof (e) !== 'undefined') {
-        stopTimer();
         answer = e.currentTarget.value;
+        correct = questions[number].correct_answer === answer;
         if (correct) setScore(prevScore => prevScore + 1)
+        stopTimer();
       }
+
 
       const answerObject = {
         question: questions[number].question,
@@ -63,7 +64,7 @@ function App() {
         correctAnswer: questions[number].correct_answer,
       }
       setUserAnswers(prev => [...prev, answerObject]);
-      console.log(timeLeft)
+      console.log(score)
     }
   }
 

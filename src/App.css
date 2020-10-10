@@ -46,13 +46,16 @@ body {
   width: 180px;
   border-radius: 50px;
   border: 1px solid #9aa6c5;
+  overflow: hidden;
 }
 
 .filler {
   background: #081c82;
   height: 100%;
   border-radius: inherit;
-  transition: width .2s ease-in;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  transition: width 1s linear;
 }
 
 .filler__text {
@@ -89,15 +92,15 @@ body {
 }
 
 .question-card__button--selected {
-
+ border: 2px solid #081c82 !important;
 }
 
 .question-card__button--correct {
-  border: 1px solid #4F8748
+  border: 1px solid #4F8748 !important;
 }
 
 .question-card__button--wrong {
-  border: 1px solid #ed1b24;
+  border: 1px solid #ed1b24 !important;
 }
 
 .question-card__button {

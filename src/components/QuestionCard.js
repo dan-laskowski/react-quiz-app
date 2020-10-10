@@ -8,6 +8,7 @@ export default function QuestionCard({
   questionNr,
   totalQuestions,
 }) {
+
   return (
     <div className="question-card">
       <p className="question-card__number">
@@ -20,8 +21,18 @@ export default function QuestionCard({
       <div className="question-card__answers">
         {answers.map(answer => (
           <div className="question-card__button-container" key={answer}>
-            <button className="question-card__button" disabled={!!userAnswer} value={answer} onClick={callback}>
-              <span dangerouslySetInnerHTML={{ __html: answer }}></span>
+            <button
+              className={
+                `question-card__button 
+                ${!!userAnswer ? (
+                  userAnswer.correctAnswer === answer ? `question-card__button--correct` : `question-card__button--wrong`
+                ) : null}`
+              }
+
+              disabled={!!userAnswer}
+              value={answer}
+              onClick={callback}>
+              {answer}
             </button>
           </div>
         ))}
