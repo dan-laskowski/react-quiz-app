@@ -77,13 +77,7 @@ function App() {
   return (
     <div className="app">
       <h1 className="quiz__title">Quiz App</h1>
-
       <div className="quiz">
-        {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
-          <button
-            className="quiz__button quiz__button--start"
-            onClick={startTrivia}>New Game</button>
-        ) : null}
         {loading && <p className="quiz__loading">Loading Questions...</p>}
         {!loading && !gameOver &&
           <>
@@ -103,7 +97,13 @@ function App() {
             onClick={nextQuestion}
           >Next Question</button>}
         {userAnswers.length === TOTAL_QUESTIONS ? <p className="quiz__score">Score: {score}</p> : null}
+        {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
+          <button
+            className="quiz__button quiz__button--start"
+            onClick={startTrivia}>New Game</button>
+        ) : null}
       </div>
+
     </div>
   );
 }
