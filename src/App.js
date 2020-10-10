@@ -43,7 +43,7 @@ function App() {
     if (timeLeft === 0) {
       checkAnswer();
     }
-  }, [timeLeft])
+  }, [timeLeft]) //eslint-disable-line react-hooks/exhaustive-deps
 
   const checkAnswer = (e) => {
     if (!gameOver) {
