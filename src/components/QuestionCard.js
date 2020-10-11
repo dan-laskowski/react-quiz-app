@@ -3,6 +3,7 @@ import React from 'react'
 export default function QuestionCard({
   question,
   answers,
+  category,
   callback,
   userAnswer,
   questionNr,
@@ -11,6 +12,7 @@ export default function QuestionCard({
 
   return (
     <div className="question-card">
+      <p className="question-card__category">{category}</p>
       <p className="question-card__number">
         Question: {questionNr} / {totalQuestions}
       </p>

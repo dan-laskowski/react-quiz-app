@@ -4,17 +4,20 @@ import './reset.css'
 import './App.css';
 import { fetchTrivia } from './api/fetchTrivia'
 import QuestionCard from './components/QuestionCard'
-import { ProgressBar } from './components/ProgressBar'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 const TOTAL_QUESTIONS = 10;
-const INITIAL_TIME = 30 * 1000;
-const INTERVAL = 1000;
+const INITIAL_TIME = 20 * 1000;
+const INTERVAL = 100;
 
 function App() {
   const [loading, setLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [number, setNumber] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
+  const [difficulty, setDifficulty] = useState('easy');
+  const [category, setCategory] = useState('')
   const [score, setScore] = useState(null);
   const [gameOver, setGameOver] = useState(true);
   const [timeLeft, { start, pause }] = useCountDown(INITIAL_TIME, INTERVAL);
@@ -22,7 +25,7 @@ function App() {
   const startTrivia = async () => {
     setLoading(true);
     setGameOver(false);
-    const newQuestions = await fetchTrivia(TOTAL_QUESTIONS, 'easy');
+    const newQuestions = await fetchTrivia(TOTAL_QUESTIONS, difficulty);
     setQuestions(newQuestions);
     setScore(0);
     setUserAnswers([]);
@@ -55,8 +58,6 @@ function App() {
         if (correct) setScore(prevScore => prevScore + 1)
         stopTimer();
       }
-
-
       const answerObject = {
         question: questions[number].question,
         answer,
@@ -76,15 +77,20 @@ function App() {
 
   return (
     <div className="app">
-      <h1 className="quiz__title">Quiz App</h1>
       <div className="quiz">
-        {loading && <p className="quiz__loading">Loading Questions...</p>}
         {!loading && !gameOver &&
           <>
-            <ProgressBar timeLeft={timeLeft} />
+            <CircularProgressbar
+              value={(timeLeft / 1000 * 5) - 1}
+              strokeWidth={50}
+              styles={buildStyles({
+                strokeLinecap: "butt",
+              })}
+            />
             <QuestionCard
               questionNr={number + 1}
               totalQuestions={TOTAL_QUESTIONS}
+              category={questions[number].category}
               question={questions[number].question}
               answers={questions[number].answers}
               userAnswer={userAnswers ? userAnswers[number] : undefined}
@@ -92,18 +98,17 @@ function App() {
             />
           </>}
         {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTIONS - 1 &&
-          <button
-            className="quiz__button quiz__button--next"
-            onClick={nextQuestion}
-          >Next Question</button>}
+          <button className="quiz__button quiz__button--next" onClick={nextQuestion}>   Next Question
+          </button>}
         {userAnswers.length === TOTAL_QUESTIONS ? <p className="quiz__score">Score: {score}</p> : null}
-        {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
-          <button
-            className="quiz__button quiz__button--start"
-            onClick={startTrivia}>New Game</button>
-        ) : null}
       </div>
+      {/* {loading && <p className="quiz__loading">Loading Questions...</p>} */}
 
+      {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
+        <button
+          className="quiz__button quiz__button--start"
+          onClick={startTrivia}>New Game</button>
+      ) : null}
     </div>
   );
 }

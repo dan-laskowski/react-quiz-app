@@ -17,10 +17,12 @@ export const fetchTrivia = async (amount, difficulty) => {
   return data.results.map((question) => (
     {
       ...question,
+      category: question.category,
       answers: shuffleArray([
         ...question.incorrect_answers,
         question.correct_answer,
       ]),
+
     }
   ))
 }
