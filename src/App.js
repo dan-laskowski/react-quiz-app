@@ -16,8 +16,8 @@ function App() {
   const [questions, setQuestions] = useState([]);
   const [number, setNumber] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
-  const [difficulty, setDifficulty] = useState('easy');
-  const [category, setCategory] = useState('')
+  //const [difficulty, setDifficulty] = useState('easy');
+  //const [category, setCategory] = useState('')
   const [score, setScore] = useState(null);
   const [gameOver, setGameOver] = useState(true);
   const [timeLeft, { start, pause }] = useCountDown(INITIAL_TIME, INTERVAL);
@@ -25,7 +25,7 @@ function App() {
   const startTrivia = async () => {
     setLoading(true);
     setGameOver(false);
-    const newQuestions = await fetchTrivia(TOTAL_QUESTIONS, difficulty);
+    const newQuestions = await fetchTrivia(TOTAL_QUESTIONS, 'easy');
     setQuestions(newQuestions);
     setScore(0);
     setUserAnswers([]);
