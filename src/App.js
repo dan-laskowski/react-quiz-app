@@ -6,26 +6,30 @@ import { fetchTrivia } from './api/fetchTrivia'
 import QuestionCard from './components/QuestionCard'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import StartGamePane from './components/StartGamePane';
+import ScorePane from './components/ScorePane'
 
-const TOTAL_QUESTIONS = 10;
+const TOTAL_QUESTIONS = 5;
 const INITIAL_TIME = 20 * 1000;
 const INTERVAL = 100;
 
 function App() {
   const [loading, setLoading] = useState(false);
+  const [showScore, setShowScore] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [number, setNumber] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
-  //const [difficulty, setDifficulty] = useState('easy');
-  //const [category, setCategory] = useState('')
+  const [difficulty, setDifficulty] = useState('easy');
+  const [category, setCategory] = useState('')
   const [score, setScore] = useState(null);
   const [gameOver, setGameOver] = useState(true);
   const [timeLeft, { start, pause }] = useCountDown(INITIAL_TIME, INTERVAL);
 
   const startTrivia = async () => {
     setLoading(true);
+    setShowScore(false);
     setGameOver(false);
-    const newQuestions = await fetchTrivia(TOTAL_QUESTIONS, 'easy');
+    const newQuestions = await fetchTrivia(TOTAL_QUESTIONS, difficulty, category);
     setQuestions(newQuestions);
     setScore(0);
     setUserAnswers([]);
@@ -65,7 +69,6 @@ function App() {
         correctAnswer: questions[number].correct_answer,
       }
       setUserAnswers(prev => [...prev, answerObject]);
-      console.log(score)
     }
   }
 
@@ -78,7 +81,28 @@ function App() {
   return (
     <div className="app">
       <div className="quiz">
-        {!loading && !gameOver &&
+        {gameOver
+          &&
+          <>
+            <StartGamePane
+              setDifficulty={setDifficulty}
+              setCategory={setCategory}
+              startGame={startTrivia}
+            />
+          </>}
+        {loading
+          ?
+          <>
+            <div className="quiz__loading">
+              <i className="fas fa-spinner fa-spin fa-2x"></i>
+              <p>Loading questions...</p>
+
+            </div>
+          </>
+          : null
+        }
+        {!loading && !gameOver && !showScore
+          &&
           <>
             <CircularProgressbar
               value={(timeLeft / 1000 * 5) - 1}
@@ -97,19 +121,36 @@ function App() {
               callback={checkAnswer}
             />
           </>}
-        {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTIONS - 1 &&
-          <button className="quiz__button quiz__button--next" onClick={nextQuestion}>   Next Question
-          </button>}
-        {userAnswers.length === TOTAL_QUESTIONS ? <p className="quiz__score">Score: {score}</p> : null}
+        {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTIONS - 1
+          &&
+          <>
+            <button className="quiz__button quiz__button--next" onClick={nextQuestion}>
+              Next Question
+            </button>
+          </>}
+        {userAnswers.length === TOTAL_QUESTIONS && !showScore && !loading
+          ?
+          <>
+            <button className="quiz__show-score" onClick={() => setShowScore(true)}>Show Score</button>
+          </>
+          :
+          null
+        }
+        {userAnswers.length === TOTAL_QUESTIONS && !loading && showScore
+          ?
+          <>
+            <ScorePane
+              score={score}
+              userAnswers={userAnswers}
+              totalQuestions={TOTAL_QUESTIONS}
+              startGame={startTrivia}
+              setShowScore={setShowScore}
+              setGameOver={setGameOver}
+              setUserAnswers={setUserAnswers} />
+          </>
+          : null}
       </div>
-      {/* {loading && <p className="quiz__loading">Loading Questions...</p>} */}
-
-      {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
-        <button
-          className="quiz__button quiz__button--start"
-          onClick={startTrivia}>New Game</button>
-      ) : null}
-    </div>
+    </div >
   );
 }
 

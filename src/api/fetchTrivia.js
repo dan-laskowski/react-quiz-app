@@ -3,17 +3,18 @@ import { shuffleArray } from '../utils/shuffleArray'
 const URL = `https://opentdb.com/api.php`;
 
 
-export const fetchTrivia = async (amount, difficulty) => {
+export const fetchTrivia = async (amount, difficulty, category) => {
   const { data } = await axios.get(URL,
     {
       params:
       {
         amount,
         difficulty,
+        category,
         type: 'multiple'
       }
     });
-
+  console.log(difficulty)
   return data.results.map((question) => (
     {
       ...question,

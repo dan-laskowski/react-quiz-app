@@ -34,7 +34,7 @@ export default function QuestionCard({
               disabled={!!userAnswer}
               value={answer}
               onClick={callback}>
-              {answer}
+              <p dangerouslySetInnerHTML={{ __html: answer }} />
             </button>
           </div>
         ))}

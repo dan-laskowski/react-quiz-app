@@ -41,6 +41,12 @@ body {
   text-align: center;
 }
 
+.quiz__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .progress-bar {
   position: relative;
   height: 20px;
@@ -121,6 +127,10 @@ body {
 
 .quiz__button--start {
   margin-top: 20px;
+}
+
+.fas {
+  margin-bottom: 24px;
 }
 
 svg.CircularProgressbar {
