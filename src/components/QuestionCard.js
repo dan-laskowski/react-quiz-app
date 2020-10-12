@@ -14,7 +14,7 @@ export default function QuestionCard({
     <div className="question-card">
       <p className="question-card__category">{category}</p>
       <p className="question-card__number">
-        Question: {questionNr} / {totalQuestions}
+        Question: <span className="question-card__current-number">{questionNr}</span> / <span className="question-card__total-number">{totalQuestions}</span>
       </p>
       <p
         className="question-card__question"
@@ -27,10 +27,9 @@ export default function QuestionCard({
               className={
                 `question-card__button 
                 ${!!userAnswer ? (
-                  userAnswer.correctAnswer === answer ? `question-card__button--correct` : `question-card__button--wrong`
+                  userAnswer.correctAnswer === answer ? `question-card__button--correct` : null
                 ) : null}`
               }
-
               disabled={!!userAnswer}
               value={answer}
               onClick={callback}>

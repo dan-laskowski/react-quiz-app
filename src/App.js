@@ -9,8 +9,8 @@ import 'react-circular-progressbar/dist/styles.css';
 import StartGamePane from './components/StartGamePane';
 import ScorePane from './components/ScorePane'
 
-const TOTAL_QUESTIONS = 5;
-const INITIAL_TIME = 20 * 1000;
+const TOTAL_QUESTIONS = 10;
+const INITIAL_TIME = 10 * 1000;
 const INTERVAL = 100;
 
 function App() {
@@ -20,7 +20,8 @@ function App() {
   const [number, setNumber] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
   const [difficulty, setDifficulty] = useState('easy');
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState('');
+  const [completion, setCompletion] = useState(null);
   const [score, setScore] = useState(null);
   const [gameOver, setGameOver] = useState(true);
   const [timeLeft, { start, pause }] = useCountDown(INITIAL_TIME, INTERVAL);
@@ -31,6 +32,7 @@ function App() {
     setGameOver(false);
     const newQuestions = await fetchTrivia(TOTAL_QUESTIONS, difficulty, category);
     setQuestions(newQuestions);
+    setCompletion(0);
     setScore(0);
     setUserAnswers([]);
     setNumber(0);
@@ -57,10 +59,15 @@ function App() {
       let answer = '';
       let correct = ''
       if (typeof (e) !== 'undefined') {
+
         answer = e.currentTarget.value;
         correct = questions[number].correct_answer === answer;
-        if (correct) setScore(prevScore => prevScore + 1)
+        if (correct) {
+          setScore(prevScore => prevScore + 1)
+        }
+        setCompletion(prevState => prevState + 1)
         stopTimer();
+        e.currentTarget.style.background = '#ED4337'
       }
       const answerObject = {
         question: questions[number].question,
@@ -105,8 +112,9 @@ function App() {
           &&
           <>
             <CircularProgressbar
-              value={(timeLeft / 1000 * 5) - 1}
+              value={(timeLeft / 1000 * 10) - 1}
               strokeWidth={50}
+              counterClockwise
               styles={buildStyles({
                 strokeLinecap: "butt",
               })}
@@ -125,7 +133,7 @@ function App() {
           &&
           <>
             <button className="quiz__button quiz__button--next" onClick={nextQuestion}>
-              Next Question
+              Next
             </button>
           </>}
         {userAnswers.length === TOTAL_QUESTIONS && !showScore && !loading
@@ -141,6 +149,7 @@ function App() {
           <>
             <ScorePane
               score={score}
+              completion={completion}
               userAnswers={userAnswers}
               totalQuestions={TOTAL_QUESTIONS}
               startGame={startTrivia}
