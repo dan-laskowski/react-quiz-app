@@ -10,6 +10,43 @@ body {
   align-items: center;
 }
 
+.start-game {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.start-game__title {
+  font-size: 2rem;
+  font-weight: bold;
+  align-self:center;
+  margin-bottom:24px;
+}
+
+.start-game__selectors {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.start-game__select-title{
+  margin-bottom: 12px;
+}
+
+.start-game__select {
+  width:80%;
+  margin-bottom: 24px;
+  border: none;
+  border-bottom: 1px solid #081c82;
+}
+
+.start-game__radio-group {
+  display: flex;
+  width: 63%;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
 
 .quiz {
   padding: 15px 15px;
