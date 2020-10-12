@@ -38,6 +38,7 @@ body {
   margin-bottom: 24px;
   border: none;
   border-bottom: 1px solid #081c82;
+  background: none;
 }
 
 .start-game__radio-group {
@@ -46,7 +47,6 @@ body {
   justify-content: space-between;
   margin-bottom: 18px;
 }
-
 
 .quiz {
   padding: 15px 15px;
@@ -85,12 +85,18 @@ body {
 }
 
 .progress-bar {
-  position: relative;
-  height: 20px;
-  width: 180px;
-  border-radius: 50px;
-  border: 1px solid #9aa6c5;
-  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  margin: 16px 0;
+}
+.quiz__button--score{
+  
+}
+
+.progress-bar .CircularProgressbar {
+  width:180px;
 }
 
 .filler {
@@ -188,7 +194,7 @@ body {
 }
 
 .quiz__button {
-  padding: 6px;
+  padding: 6px 12px;
   align-self: center;
   margin: 4px 0;
   border-radius: 1rem;
@@ -197,6 +203,7 @@ body {
   box-shadow: 1px 2.9px 16px rgba(8,28,130, 0.4);
   color: #fff;
   transition: .2s;
+  width: 140px;
 }
 
 .quiz__button--next {
@@ -212,6 +219,19 @@ body {
 
 .quiz__button--start {
   margin-top: 20px;
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  
+}
+
+.quiz__main-score{
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 18px 0;
 }
 
 .fas {

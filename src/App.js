@@ -9,7 +9,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import StartGamePane from './components/StartGamePane';
 import ScorePane from './components/ScorePane'
 
-const TOTAL_QUESTIONS = 10;
+const TOTAL_QUESTIONS = 4;
 const INITIAL_TIME = 10 * 1000;
 const INTERVAL = 100;
 
