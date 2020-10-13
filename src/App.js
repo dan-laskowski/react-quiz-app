@@ -9,7 +9,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import StartGamePane from './components/StartGamePane';
 import ScorePane from './components/ScorePane'
 
-const TOTAL_QUESTIONS = 4;
+const TOTAL_QUESTIONS = 2;
 const INITIAL_TIME = 10 * 1000;
 const INTERVAL = 100;
 
@@ -139,7 +139,7 @@ function App() {
         {userAnswers.length === TOTAL_QUESTIONS && !showScore && !loading
           ?
           <>
-            <button className="quiz__show-score" onClick={() => setShowScore(true)}>Show Score</button>
+            <button className="quiz__button quiz__button--score" onClick={() => setShowScore(true)}>Show Score</button>
           </>
           :
           null
