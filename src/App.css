@@ -307,3 +307,12 @@ svg.CircularProgressbar {
   width: 10%;
   align-self: flex-end;
 }
+
+.progressbar-timer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.progressbar-timer .CircularProgressbar .CircularProgressbar-path {
+  transition: none !important;
+}

@@ -11,7 +11,7 @@ import ScorePane from './components/ScorePane'
 
 const TOTAL_QUESTIONS = 12;
 const INITIAL_TIME = 10 * 1000;
-const INTERVAL = 100;
+const INTERVAL = 50;
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -111,14 +111,16 @@ function App() {
         {!loading && !gameOver && !showScore
           &&
           <>
-            <CircularProgressbar
-              value={(timeLeft / 1000 * 10) - 1}
-              strokeWidth={50}
-              counterClockwise
-              styles={buildStyles({
-                strokeLinecap: "butt",
-              })}
-            />
+            <div className="progressbar-timer">
+              <CircularProgressbar
+                value={(timeLeft / 1000 * 10) - 1}
+                strokeWidth={50}
+                counterClockwise
+                styles={buildStyles({
+                  strokeLinecap: "butt",
+                })}
+              />
+            </div>
             <QuestionCard
               questionNr={number + 1}
               totalQuestions={TOTAL_QUESTIONS}
