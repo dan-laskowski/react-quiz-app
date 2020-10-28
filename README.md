@@ -23,3 +23,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
     > cd react-quiz-app
     > npm install
     > npm start
+
+## Dependencies
+   - axios
+   - react-circular-progressbar
+   - react-countdown-hook
+   - react-countup
+   
